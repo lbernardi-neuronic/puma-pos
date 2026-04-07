@@ -1,5 +1,11 @@
 import { ReactNode } from 'react';
+import { Metadata } from 'next';
 import AdminSidebar from '@/components/admin/Sidebar';
+
+export const metadata: Metadata = {
+  title: 'Puma Shop POS | Panel de Administración',
+  description: 'Gestión de inventario, proveedores y configuraciones.',
+};
 import { Bell, Settings } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -42,8 +48,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 <span className="text-xs font-black text-slate-800 tracking-tight">Admin Puma</span>
                 <span className="text-[9px] font-bold text-slate-400 tracking-widest uppercase">Supervisor</span>
               </div>
-              <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-slate-200 border border-slate-300 overflow-hidden shrink-0">
-                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=100&q=80" alt="Avatar" className="w-full h-full object-cover" />
+              <div className="w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-brand-primary-dark border border-brand-primary/20 overflow-hidden shrink-0 flex items-center justify-center text-white font-bold text-sm">
+                AP
               </div>
             </div>
           </div>

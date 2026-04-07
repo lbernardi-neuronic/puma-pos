@@ -1,8 +1,9 @@
 'use client';
 
 import { mockSuppliers, mockCategories, Supplier, CondicionIVA, Category } from '@/lib/mock-data';
-import { Plus, Pencil, Trash2, X, Users, Phone, Mail, MapPin, Building2 } from 'lucide-react';
-import { useState } from 'react';
+import { Plus, Pencil, Trash2, X, Users, Phone, Building2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import ConfirmDeleteModal from '@/components/admin/ConfirmDeleteModal';
 import clsx from 'clsx';
 
 type ModalMode = 'none' | 'create' | 'edit' | 'delete';
@@ -63,6 +64,16 @@ export default function SuppliersPage() {
     }
     closeModal();
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && (modalMode === 'create' || modalMode === 'edit')) {
+        closeModal();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [modalMode]);
 
   // Get category color from mockCategories
   const getCatColor = (catName: string) => mockCategories.find(c => c.name === catName)?.color || '#64748b';
@@ -141,15 +152,17 @@ export default function SuppliersPage() {
                   onClick={() => openEdit(sup)}
                   className="p-2 text-slate-400 hover:text-brand-primary hover:bg-brand-primary/5 rounded-lg transition-colors"
                   title="Editar"
+                  aria-label={`Editar proveedor ${sup.name}`}
                 >
-                  <Pencil className="w-4 h-4" />
+                  <Pencil className="w-4 h-4" aria-hidden="true" />
                 </button>
                 <button
                   onClick={() => openDelete(sup.id)}
                   className="p-2 text-slate-400 hover:text-pumas-red hover:bg-red-50 rounded-lg transition-colors"
                   title="Eliminar"
+                  aria-label={`Eliminar proveedor ${sup.name}`}
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-4 h-4" aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -187,10 +200,16 @@ export default function SuppliersPage() {
       {/* ── Create / Edit Modal ────────────────────────────── */}
       {(modalMode === 'create' || modalMode === 'edit') && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl shadow-xl w-full max-w-2xl p-8 relative max-h-[90vh] overflow-y-auto">
+          <form 
+            onSubmit={(e) => { e.preventDefault(); handleSave(); }}
+            className="bg-white rounded-3xl shadow-xl w-full max-w-2xl p-8 relative max-h-[90vh] overflow-y-auto"
+            role="dialog"
+            aria-modal="true"
+            aria-label={modalMode === 'create' ? 'Nuevo Proveedor' : 'Editar Proveedor'}
+          >
             {/* Close */}
-            <button onClick={closeModal} className="absolute top-6 right-6 p-2 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-lg transition-colors">
-              <X className="w-5 h-5" />
+            <button type="button" onClick={closeModal} className="absolute top-6 right-6 p-2 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-lg transition-colors">
+              <X className="w-5 h-5" aria-hidden="true" />
             </button>
 
             <h3 className="text-2xl font-black text-slate-800 tracking-tight mb-6">
@@ -206,6 +225,7 @@ export default function SuppliersPage() {
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   placeholder="Ej: Distribuidora Norte S.A."
+                  required
                   className="w-full bg-slate-50 ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl px-4 py-3.5 text-slate-800 font-bold placeholder-slate-400 outline-none transition-all"
                 />
               </div>
@@ -253,6 +273,9 @@ export default function SuppliersPage() {
                     value={form.cuit}
                     onChange={(e) => setForm({ ...form, cuit: e.target.value })}
                     placeholder="XX-XXXXXXXX-X"
+                    required
+                    pattern="^\d{2}-\d{8}-\d{1}$"
+                    title="Formato de CUIT inválido (ej: 30-12345678-9)"
                     className="w-full bg-slate-50 ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl px-4 py-3.5 text-slate-800 font-bold font-mono placeholder-slate-400 outline-none transition-all"
                   />
                 </div>
@@ -275,7 +298,7 @@ export default function SuppliersPage() {
                 <div className="flex flex-col gap-2">
                   <label className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Categoría que Provee</label>
                   <select
-                    defaultValue={form.category}
+                    value={form.category}
                     onChange={(e) => setForm({ ...form, category: e.target.value as Category })}
                     className="w-full bg-slate-50 ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl px-4 py-3.5 text-slate-800 font-bold appearance-none outline-none transition-all"
                   >
@@ -287,7 +310,7 @@ export default function SuppliersPage() {
                 <div className="flex flex-col gap-2">
                   <label className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Condición IVA</label>
                   <select
-                    defaultValue={form.condicionIVA}
+                    value={form.condicionIVA}
                     onChange={(e) => setForm({ ...form, condicionIVA: e.target.value as CondicionIVA })}
                     className="w-full bg-slate-50 ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl px-4 py-3.5 text-slate-800 font-bold appearance-none outline-none transition-all"
                   >
@@ -332,53 +355,32 @@ export default function SuppliersPage() {
               </div>
             </div>
 
-            {/* Actions */}
             <div className="flex gap-4 mt-8">
               <button
+                type="button"
                 onClick={closeModal}
                 className="flex-1 py-4 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-colors"
               >
                 Cancelar
               </button>
               <button
-                onClick={handleSave}
+                type="submit"
                 className="flex-1 py-4 px-4 bg-brand-primary-dark hover:bg-brand-primary text-white font-bold rounded-xl transition-colors shadow-lg shadow-brand-primary/20"
               >
                 {modalMode === 'create' ? 'Crear Proveedor' : 'Guardar Cambios'}
               </button>
             </div>
-          </div>
+          </form>
         </div>
       )}
 
-      {/* ── Delete Confirmation Modal ──────────────────────── */}
-      {modalMode === 'delete' && selectedId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl shadow-xl w-full max-w-md p-8 relative">
-            <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mb-6 text-pumas-red">
-              <Trash2 className="w-8 h-8" />
-            </div>
-            <h3 className="text-2xl font-black text-slate-800 tracking-tight mb-2">¿Eliminar proveedor?</h3>
-            <p className="text-sm font-medium text-slate-500 mb-8 leading-relaxed">
-              Esta acción no se puede deshacer. Se eliminará permanentemente el proveedor del sistema.
-            </p>
-            <div className="flex gap-4">
-              <button
-                onClick={closeModal}
-                className="flex-1 py-4 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-colors"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={handleDelete}
-                className="flex-1 py-4 px-4 bg-pumas-red hover:bg-[#b71c1c] text-white font-bold rounded-xl transition-colors shadow-lg shadow-red-500/20"
-              >
-                Eliminar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmDeleteModal
+        isOpen={modalMode === 'delete'}
+        onClose={closeModal}
+        onConfirm={handleDelete}
+        title="¿Eliminar proveedor?"
+        description="Esta acción no se puede deshacer. Se eliminará permanentemente el proveedor del sistema."
+      />
     </div>
   );
 }

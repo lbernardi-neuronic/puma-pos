@@ -3,8 +3,10 @@
 import { mockProducts } from '@/lib/mock-data';
 import { Plus, TrendingDown, Layers, Box, Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import ConfirmDeleteModal from '@/components/admin/ConfirmDeleteModal';
 
 export default function InventoryPage() {
   const [products, setProducts] = useState(mockProducts);
@@ -23,9 +25,11 @@ export default function InventoryPage() {
     ? products
     : products.filter(p => filterMap[filter]?.includes(p.category));
 
-  // Mocks Stats
-  const valorInventario = 4280450.00;
+  // Stats dinámicas
+  const valorInventario = useMemo(() => products.reduce((acc, p) => acc + (p.price * p.stock), 0), [products]);
   const stockCriticoCount = products.filter(p => p.status === 'critico' || p.status === 'stock_bajo').length;
+  const categoriesCount = useMemo(() => new Set(products.map(p => p.category)).size, [products]);
+  const totalProducts = products.length;
   
   const confirmDelete = () => {
     if (productToDelete) {
@@ -106,12 +110,15 @@ export default function InventoryPage() {
               <div className="col-span-3 flex items-center gap-4">
                 <div className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden">
                   {product.image ? (
-                     <div 
-                      className="w-full h-full bg-cover bg-center"
-                      style={{ backgroundImage: `url(${product.image})` }}
+                     <Image 
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-cover"
+                      sizes="40px"
                     />
                   ) : (
-                    <Box className="w-5 h-5 text-brand-primary/50" />
+                    <Box className="w-5 h-5 text-brand-primary/50" aria-hidden="true" />
                   )}
                 </div>
                 <div>
@@ -142,8 +149,9 @@ export default function InventoryPage() {
                   onClick={() => setProductToDelete(product.id)}
                   className="p-2 text-slate-400 hover:text-pumas-red hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                   title="Eliminar producto"
+                  aria-label={`Eliminar ${product.name}`}
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-4 h-4" aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -167,7 +175,7 @@ export default function InventoryPage() {
               <Layers className="w-6 h-6 text-[#8b6f00]" />
            </div>
            <p className="text-[11px] font-bold text-slate-500 tracking-wide uppercase">Categorías Activas</p>
-           <p className="text-3xl font-black text-slate-900 tracking-tighter mt-1">8</p>
+           <p className="text-3xl font-black text-slate-900 tracking-tighter mt-1">{categoriesCount}</p>
         </div>
 
         <div className="bg-brand-secondary rounded-2xl p-6">
@@ -175,39 +183,18 @@ export default function InventoryPage() {
               <Box className="w-6 h-6 text-brand-primary-dark" />
            </div>
            <p className="text-[11px] font-bold text-slate-500 tracking-wide uppercase">Productos Totales</p>
-           <p className="text-3xl font-black text-slate-900 tracking-tighter mt-1">1,248</p>
+           <p className="text-3xl font-black text-slate-900 tracking-tighter mt-1">{totalProducts.toLocaleString()}</p>
         </div>
       </div>
 
       {/* Delete Confirmation Modal */}
-      {productToDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl shadow-xl w-full max-w-md p-8 relative animate-in fade-in zoom-in-95 duration-200">
-            <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mb-6 text-pumas-red">
-              <Trash2 className="w-8 h-8" />
-            </div>
-            <h3 className="text-2xl font-black text-slate-800 tracking-tight mb-2">¿Eliminar producto?</h3>
-            <p className="text-sm font-medium text-slate-500 mb-8 leading-relaxed">
-              Esta acción no se puede deshacer. El producto será eliminado permanentemente de tu inventario.
-            </p>
-            
-            <div className="flex gap-4">
-              <button 
-                onClick={() => setProductToDelete(null)}
-                className="flex-1 py-4 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-colors"
-              >
-                Cancelar
-              </button>
-              <button 
-                onClick={confirmDelete}
-                className="flex-1 py-4 px-4 bg-pumas-red hover:bg-[#b71c1c] text-white font-bold rounded-xl transition-colors shadow-lg shadow-red-500/20"
-              >
-                Eliminar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmDeleteModal
+        isOpen={!!productToDelete}
+        onClose={() => setProductToDelete(null)}
+        onConfirm={confirmDelete}
+        title="¿Eliminar producto?"
+        description="Esta acción no se puede deshacer. El producto será eliminado permanentemente de tu inventario."
+      />
 
     </div>
   );

@@ -13,6 +13,9 @@ export default function LoginPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    // TODO: SECURITY - Mover autenticación real a un backend seguro.
+    // Los PINs están hardcodeados para propósito de MVP/Prototipo.
+    // Además, las cookies deberían configurarse como httpOnly y secure desde la API.
     if (pin === '1234') { // Mock admin
       login('Admin Puma', 'admin');
       document.cookie = "puma-auth-token=mock-token-admin; path=/";

@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function NewProductPage() {
   return (
-    <div className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-12 py-6 lg:py-10 bg-white">
+    <form className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-12 py-6 lg:py-10 bg-white">
       {/* Breadcrumb & Title */}
       <div className="mb-10">
         <div className="flex gap-2 text-[11px] font-bold text-slate-400 mb-2 tracking-widest uppercase">
@@ -33,14 +33,14 @@ export default function NewProductPage() {
             <div className="space-y-6">
               <div className="flex flex-col gap-2">
                 <label className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Nombre del Producto</label>
-                <input type="text" placeholder="Ej: Aceite Synthetic 5W-30 1L" className="w-full bg-slate-50 border-none outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl px-4 py-3.5 text-slate-800 font-bold placeholder-slate-400 transition-all" />
+                <input type="text" placeholder="Ej: Aceite Synthetic 5W-30 1L" required className="w-full bg-slate-50 border-none outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl px-4 py-3.5 text-slate-800 font-bold placeholder-slate-400 transition-all" />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
                   <label className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Código/SKU</label>
                   <div className="relative">
-                    <input type="text" placeholder="SKU-00000" className="w-full bg-slate-50 border-none outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl px-4 py-3.5 text-slate-800 font-bold placeholder-slate-400 transition-all uppercase font-mono" />
+                    <input type="text" placeholder="SKU-00000" required className="w-full bg-slate-50 border-none outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl px-4 py-3.5 text-slate-800 font-bold placeholder-slate-400 transition-all uppercase font-mono" />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2">
                       <HelpCircle className="w-5 h-5 text-slate-300" />
                     </span>
@@ -49,7 +49,7 @@ export default function NewProductPage() {
 
                 <div className="flex flex-col gap-2">
                   <label className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Categoría</label>
-                  <select defaultValue="" className="w-full bg-slate-50 border-none outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl px-4 py-3.5 text-slate-800 font-bold appearance-none transition-all cursor-pointer">
+                  <select defaultValue="" required className="w-full bg-slate-50 border-none outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl px-4 py-3.5 text-slate-800 font-bold appearance-none transition-all cursor-pointer">
                     <option value="" disabled>Seleccionar Categoría</option>
                     <option value="combustibles">Combustibles</option>
                     <option value="tienda">Tienda (Shop)</option>
@@ -77,7 +77,7 @@ export default function NewProductPage() {
                 <label className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Precio de Venta ($)</label>
                 <div className="relative">
                    <span className="absolute left-4 top-1/2 -translate-y-1/2 font-black text-slate-400 text-xl">$</span>
-                   <input type="number" placeholder="0.00" className="w-full bg-slate-50 border-none outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl pl-10 pr-4 py-3.5 text-slate-800 font-black text-xl transition-all" />
+                   <input type="number" placeholder="0.00" required min="0" step="0.01" className="w-full bg-slate-50 border-none outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl pl-10 pr-4 py-3.5 text-slate-800 font-black text-xl transition-all" />
                 </div>
               </div>
 
@@ -87,7 +87,7 @@ export default function NewProductPage() {
                    <span className="absolute left-4 top-1/2 -translate-y-1/2">
                       <HelpCircle className="w-5 h-5 text-slate-400" />
                    </span>
-                   <input type="number" placeholder="Cant." className="w-full bg-slate-50 border-none outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl pl-12 pr-4 py-3.5 text-slate-800 font-black text-xl transition-all" />
+                   <input type="number" placeholder="Cant." required min="0" step="1" className="w-full bg-slate-50 border-none outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl pl-12 pr-4 py-3.5 text-slate-800 font-black text-xl transition-all" />
                 </div>
               </div>
             </div>
@@ -151,12 +151,12 @@ export default function NewProductPage() {
             <ArrowLeft className="w-5 h-5" />
             Cancelar
           </Link>
-          <button className="px-6 py-3.5 bg-brand-primary-dark hover:bg-brand-primary text-white font-bold rounded-xl transition-all shadow-lg flex items-center gap-2">
+          <button type="submit" className="px-6 py-3.5 bg-brand-primary-dark hover:bg-brand-primary text-white font-bold rounded-xl transition-all shadow-lg flex items-center gap-2">
             <Save className="w-5 h-5" />
             Guardar Cambios
           </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 }

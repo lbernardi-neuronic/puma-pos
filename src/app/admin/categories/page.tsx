@@ -2,7 +2,8 @@
 
 import { mockCategories, mockProducts, CategoryItem } from '@/lib/mock-data';
 import { Plus, Pencil, Trash2, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import ConfirmDeleteModal from '@/components/admin/ConfirmDeleteModal';
 import clsx from 'clsx';
 
 type ModalMode = 'none' | 'create' | 'edit' | 'delete';
@@ -63,6 +64,16 @@ export default function CategoriesPage() {
     closeModal();
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && (modalMode === 'create' || modalMode === 'edit')) {
+        closeModal();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [modalMode]);
+
   return (
     <div className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-12 py-6 lg:py-10 bg-white">
       {/* Header */}
@@ -100,8 +111,9 @@ export default function CategoriesPage() {
                 onClick={() => openDelete(cat.id)}
                 className="p-2 text-slate-400 hover:text-pumas-red hover:bg-red-50 rounded-lg transition-colors"
                 title="Eliminar"
+                aria-label={`Eliminar categoría ${cat.name}`}
               >
-                <Trash2 className="w-4 h-4" />
+                <Trash2 className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
 
@@ -161,10 +173,16 @@ export default function CategoriesPage() {
       {/* ── Create / Edit Modal ────────────────────────────── */}
       {(modalMode === 'create' || modalMode === 'edit') && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl shadow-xl w-full max-w-lg p-8 relative">
+          <form 
+            onSubmit={(e) => { e.preventDefault(); handleSave(); }}
+            className="bg-white rounded-3xl shadow-xl w-full max-w-lg p-8 relative"
+            role="dialog"
+            aria-modal="true"
+            aria-label={modalMode === 'create' ? 'Nueva Categoría' : 'Editar Categoría'}
+          >
             {/* Close */}
-            <button onClick={closeModal} className="absolute top-6 right-6 p-2 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-lg transition-colors">
-              <X className="w-5 h-5" />
+            <button type="button" onClick={closeModal} className="absolute top-6 right-6 p-2 bg-slate-100 hover:bg-slate-200 text-slate-500 rounded-lg transition-colors">
+              <X className="w-5 h-5" aria-hidden="true" />
             </button>
 
             <h3 className="text-2xl font-black text-slate-800 tracking-tight mb-6">
@@ -180,6 +198,7 @@ export default function CategoriesPage() {
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value as CategoryItem['name'] })}
                   placeholder="Ej: Snacks Frescos"
+                  required
                   className="w-full bg-slate-50 ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl px-4 py-3.5 text-slate-800 font-bold placeholder-slate-400 outline-none transition-all"
                 />
               </div>
@@ -192,6 +211,7 @@ export default function CategoriesPage() {
                     type="text"
                     value={form.icon}
                     onChange={(e) => setForm({ ...form, icon: e.target.value })}
+                    required
                     className="w-full bg-slate-50 ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl px-4 py-3.5 text-2xl text-center outline-none transition-all"
                   />
                 </div>
@@ -243,53 +263,32 @@ export default function CategoriesPage() {
               </div>
             </div>
 
-            {/* Actions */}
             <div className="flex gap-4 mt-8">
               <button
+                type="button"
                 onClick={closeModal}
                 className="flex-1 py-4 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-colors"
               >
                 Cancelar
               </button>
               <button
-                onClick={handleSave}
+                type="submit"
                 className="flex-1 py-4 px-4 bg-brand-primary-dark hover:bg-brand-primary text-white font-bold rounded-xl transition-colors shadow-lg shadow-brand-primary/20"
               >
                 {modalMode === 'create' ? 'Crear Categoría' : 'Guardar Cambios'}
               </button>
             </div>
-          </div>
+          </form>
         </div>
       )}
 
-      {/* ── Delete Confirmation Modal ──────────────────────── */}
-      {modalMode === 'delete' && selectedId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl shadow-xl w-full max-w-md p-8 relative">
-            <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mb-6 text-pumas-red">
-              <Trash2 className="w-8 h-8" />
-            </div>
-            <h3 className="text-2xl font-black text-slate-800 tracking-tight mb-2">¿Eliminar categoría?</h3>
-            <p className="text-sm font-medium text-slate-500 mb-8 leading-relaxed">
-              Esta acción no se puede deshacer. Los productos asociados quedarán sin categoría asignada.
-            </p>
-            <div className="flex gap-4">
-              <button
-                onClick={closeModal}
-                className="flex-1 py-4 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-colors"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={handleDelete}
-                className="flex-1 py-4 px-4 bg-pumas-red hover:bg-[#b71c1c] text-white font-bold rounded-xl transition-colors shadow-lg shadow-red-500/20"
-              >
-                Eliminar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmDeleteModal
+        isOpen={modalMode === 'delete'}
+        onClose={closeModal}
+        onConfirm={handleDelete}
+        title="¿Eliminar categoría?"
+        description="Esta acción no se puede deshacer. Los productos asociados quedarán sin categoría asignada."
+      />
     </div>
   );
 }

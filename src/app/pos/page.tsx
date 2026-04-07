@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Header from '@/components/pos/Header';
 import { mockProducts, Category, Product, mockPumps } from '@/lib/mock-data';
 import { useCartStore } from '@/store/useCartStore';
+import Image from 'next/image';
 import clsx from 'clsx';
 
 const categories: Category[] = ['Café y Bebidas Calientes', 'Snacks Frescos', 'Bebidas', 'Lubricantes'];
@@ -46,14 +47,13 @@ export default function POSPage() {
               className="bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition-all cursor-pointer border border-slate-100 flex flex-col group active:scale-95"
             >
               <div className="aspect-square bg-slate-50 rounded-xl mb-4 overflow-hidden relative">
-                {/* Normally an `img` tag here using next/image for production performance */}
-                <div 
-                  className="w-full h-full bg-slate-200"
-                  style={{
-                    backgroundImage: `url(${product.image || 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=300&q=80'})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                  }}
+                {/* next/image for production performance */}
+                <Image
+                  src={product.image || 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=300&q=80'}
+                  alt={product.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
                 
                 {product.tags && product.tags.length > 0 && (
