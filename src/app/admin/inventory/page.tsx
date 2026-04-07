@@ -108,7 +108,7 @@ export default function InventoryPage() {
                 <span className="text-xs font-bold font-mono text-slate-500">{product.sku}</span>
               </div>
               <div className="col-span-3 flex items-center gap-4">
-                <div className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden">
+                <div className="relative w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden">
                   {product.image ? (
                      <Image 
                       src={product.image}
