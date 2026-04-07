@@ -8,6 +8,25 @@ import clsx from 'clsx';
 import { useState, useMemo } from 'react';
 import ConfirmDeleteModal from '@/components/admin/ConfirmDeleteModal';
 
+function SafeAvatar({ src, alt }: { src?: string; alt: string }) {
+  const [error, setError] = useState(false);
+
+  if (!src || error) {
+    return <Box className="w-5 h-5 text-brand-primary/50" aria-hidden="true" />;
+  }
+
+  return (
+    <Image 
+      src={src}
+      alt={alt}
+      fill
+      className="object-cover"
+      sizes="40px"
+      onError={() => setError(true)}
+    />
+  );
+}
+
 export default function InventoryPage() {
   const [products, setProducts] = useState(mockProducts);
   const [filter, setFilter] = useState('Todos');
@@ -109,17 +128,7 @@ export default function InventoryPage() {
               </div>
               <div className="col-span-3 flex items-center gap-4">
                 <div className="relative w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden">
-                  {product.image ? (
-                     <Image 
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      className="object-cover"
-                      sizes="40px"
-                    />
-                  ) : (
-                    <Box className="w-5 h-5 text-brand-primary/50" aria-hidden="true" />
-                  )}
+                  <SafeAvatar src={product.image} alt={product.name} />
                 </div>
                 <div>
                   <p className="text-sm font-bold text-slate-800 leading-tight">{product.name}</p>

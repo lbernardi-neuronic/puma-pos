@@ -53,7 +53,7 @@ export const mockProducts: Product[] = [
     stock: 60,
     tags: ['FRÍO'],
     status: 'en_stock',
-    image: 'https://images.unsplash.com/photo-1461023058943-07cb14cc4c3c?auto=format&fit=crop&w=300&q=80',
+    image: 'https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?auto=format&fit=crop&w=300&q=80',
   },
   {
     id: 'p5',
@@ -63,7 +63,7 @@ export const mockProducts: Product[] = [
     category: 'Café y Bebidas Calientes',
     stock: 30,
     status: 'en_stock',
-    image: 'https://images.unsplash.com/photo-1582787012353-8d6f51cb7e44?auto=format&fit=crop&w=300&q=80',
+    image: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?auto=format&fit=crop&w=300&q=80',
   },
   {
     id: 'p6',
@@ -83,7 +83,7 @@ export const mockProducts: Product[] = [
     category: 'Snacks Frescos',
     stock: 12,
     status: 'stock_bajo',
-    image: 'https://images.unsplash.com/photo-1549903072-7e6e0d65605d?auto=format&fit=crop&w=300&q=80',
+    image: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=300&q=80',
   },
   {
     id: 'p8',
