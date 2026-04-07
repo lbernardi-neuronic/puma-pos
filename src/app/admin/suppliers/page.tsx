@@ -68,16 +68,16 @@ export default function SuppliersPage() {
   const getCatColor = (catName: string) => mockCategories.find(c => c.name === catName)?.color || '#64748b';
 
   return (
-    <div className="flex-1 overflow-y-auto px-12 py-10 bg-white">
+    <div className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-12 py-6 lg:py-10 bg-white">
       {/* Header */}
-      <div className="flex justify-between items-end mb-10">
+      <div className="flex flex-col sm:flex-row justify-between sm:items-end mb-6 lg:mb-10 gap-4">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">Proveedores</h1>
-          <p className="text-sm font-medium text-slate-500">Gestión de proveedores y contactos comerciales.</p>
+          <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tighter mb-1 sm:mb-2">Proveedores</h1>
+          <p className="text-xs sm:text-sm font-medium text-slate-500">Gestión de proveedores y contactos comerciales.</p>
         </div>
         <button
           onClick={openCreate}
-          className="bg-brand-primary-dark hover:bg-brand-primary text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 shadow-lg shadow-brand-primary/20 transition-all active:scale-95"
+          className="bg-brand-primary-dark hover:bg-brand-primary text-white font-bold py-3 px-5 sm:px-6 rounded-xl flex items-center gap-2 shadow-lg shadow-brand-primary/20 transition-all active:scale-95 w-full sm:w-auto justify-center sm:justify-start shrink-0"
         >
           <Plus className="w-5 h-5" />
           Nuevo Proveedor
@@ -85,9 +85,9 @@ export default function SuppliersPage() {
       </div>
 
       {/* Main Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm mb-10">
+      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm mb-6 lg:mb-10 overflow-x-auto">
         {/* Header */}
-        <div className="grid grid-cols-12 gap-4 px-8 py-4 bg-slate-50 border-b border-slate-200 text-[10px] font-bold text-slate-500 tracking-widest uppercase items-center">
+        <div className="grid grid-cols-12 gap-4 px-4 sm:px-8 py-4 bg-slate-50 border-b border-slate-200 text-[10px] font-bold text-slate-500 tracking-widest uppercase items-center min-w-[700px]">
           <div className="col-span-3">Empresa</div>
           <div className="col-span-2">Contacto</div>
           <div className="col-span-2">Teléfono</div>
@@ -100,7 +100,7 @@ export default function SuppliersPage() {
         {/* Rows */}
         <div className="divide-y divide-slate-100">
           {suppliers.map((sup) => (
-            <div key={sup.id} className="grid grid-cols-12 gap-4 px-8 py-5 items-center hover:bg-slate-50 transition-colors group">
+            <div key={sup.id} className="grid grid-cols-12 gap-4 px-4 sm:px-8 py-5 items-center hover:bg-slate-50 transition-colors group min-w-[700px]">
               {/* Company */}
               <div className="col-span-3">
                 <p className="text-sm font-bold text-slate-800 leading-tight">{sup.name}</p>
@@ -158,7 +158,7 @@ export default function SuppliersPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 mb-8">
         <div className="bg-brand-secondary rounded-2xl p-6">
           <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6">
             <Users className="w-6 h-6 text-brand-primary-dark" />
@@ -211,7 +211,7 @@ export default function SuppliersPage() {
               </div>
 
               {/* Contact + Phone */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
                   <label className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Persona de Contacto</label>
                   <input
@@ -235,7 +235,7 @@ export default function SuppliersPage() {
               </div>
 
               {/* Email + CUIT */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
                   <label className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Email</label>
                   <input
@@ -271,7 +271,7 @@ export default function SuppliersPage() {
               </div>
 
               {/* Category + Condición IVA */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
                   <label className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Categoría que Provee</label>
                   <select

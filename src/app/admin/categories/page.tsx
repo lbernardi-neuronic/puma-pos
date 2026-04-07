@@ -64,16 +64,16 @@ export default function CategoriesPage() {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto px-12 py-10 bg-white">
+    <div className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-12 py-6 lg:py-10 bg-white">
       {/* Header */}
-      <div className="flex justify-between items-end mb-10">
+      <div className="flex flex-col sm:flex-row justify-between sm:items-end mb-6 lg:mb-10 gap-4">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">Categorías de Productos</h1>
-          <p className="text-sm font-medium text-slate-500">Organización del catálogo de tienda y combustibles.</p>
+          <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tighter mb-1 sm:mb-2">Categorías de Productos</h1>
+          <p className="text-xs sm:text-sm font-medium text-slate-500">Organización del catálogo de tienda y combustibles.</p>
         </div>
         <button
           onClick={openCreate}
-          className="bg-brand-primary-dark hover:bg-brand-primary text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 shadow-lg shadow-brand-primary/20 transition-all active:scale-95"
+          className="bg-brand-primary-dark hover:bg-brand-primary text-white font-bold py-3 px-5 sm:px-6 rounded-xl flex items-center gap-2 shadow-lg shadow-brand-primary/20 transition-all active:scale-95 w-full sm:w-auto justify-center sm:justify-start shrink-0"
         >
           <Plus className="w-5 h-5" />
           Nueva Categoría
@@ -81,7 +81,7 @@ export default function CategoriesPage() {
       </div>
 
       {/* Category Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-10">
         {categories.map((cat) => (
           <div
             key={cat.id}
@@ -141,7 +141,7 @@ export default function CategoriesPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 mb-8">
         <div className="bg-brand-secondary rounded-2xl p-6">
           <p className="text-[11px] font-bold text-slate-500 tracking-wide uppercase mb-1">Categorías Activas</p>
           <p className="text-3xl font-black text-slate-900 tracking-tighter">{categories.filter(c => c.active).length}</p>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function NewProductPage() {
   return (
-    <div className="flex-1 overflow-y-auto px-12 py-10 bg-white">
+    <div className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-12 py-6 lg:py-10 bg-white">
       {/* Breadcrumb & Title */}
       <div className="mb-10">
         <div className="flex gap-2 text-[11px] font-bold text-slate-400 mb-2 tracking-widest uppercase">
@@ -13,10 +13,10 @@ export default function NewProductPage() {
           <span>›</span>
           <span className="text-slate-800">Nuevo Producto</span>
         </div>
-        <h1 className="text-4xl font-black text-slate-900 tracking-tighter">Agregar Nuevo Producto</h1>
+        <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tighter">Agregar Nuevo Producto</h1>
       </div>
 
-      <div className="flex gap-6 pb-24">
+      <div className="flex flex-col lg:flex-row gap-6 pb-24">
         
         {/* Left Column - Main Forms */}
         <div className="flex-1 flex flex-col gap-6">
@@ -36,7 +36,7 @@ export default function NewProductPage() {
                 <input type="text" placeholder="Ej: Aceite Synthetic 5W-30 1L" className="w-full bg-slate-50 border-none outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-primary/50 rounded-xl px-4 py-3.5 text-slate-800 font-bold placeholder-slate-400 transition-all" />
               </div>
 
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
                   <label className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Código/SKU</label>
                   <div className="relative">
@@ -72,7 +72,7 @@ export default function NewProductPage() {
               Precio e Inventario
             </h2>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
                 <label className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Precio de Venta ($)</label>
                 <div className="relative">
@@ -95,7 +95,7 @@ export default function NewProductPage() {
         </div>
 
         {/* Right Column - Image & Status */}
-        <div className="w-[360px] flex flex-col gap-6 shrink-0">
+        <div className="w-full lg:w-[360px] flex flex-col gap-6 shrink-0">
           
           <div className="bg-white border text-slate-800 border-slate-200 rounded-2xl shadow-sm p-8">
             <p className="text-[10px] font-bold text-slate-500 tracking-widest uppercase mb-4">Imagen del Producto</p>
@@ -134,7 +134,7 @@ export default function NewProductPage() {
       </div>
 
       {/* Sticky Bottom Actions */}
-      <div className="sticky bottom-0 bg-white border-t border-slate-200 p-6 flex justify-between items-center z-10 -mx-12 px-12">
+      <div className="sticky bottom-0 bg-white border-t border-slate-200 p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-center z-10 -mx-4 sm:-mx-6 lg:-mx-12 px-4 sm:px-6 lg:px-12 gap-4">
         <div className="flex gap-4">
           <div className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
             <span className="bg-slate-100 border border-slate-300 px-1.5 py-0.5 rounded text-slate-600">F10</span>

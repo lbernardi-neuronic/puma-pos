@@ -35,32 +35,32 @@ export default function InventoryPage() {
   };
   
   return (
-    <div className="flex-1 overflow-y-auto px-12 py-10 bg-white">
+    <div className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-12 py-6 lg:py-10 bg-white">
       
       {/* Header & Main Call to Actions */}
-      <div className="flex justify-between items-end mb-10">
+      <div className="flex flex-col sm:flex-row justify-between sm:items-end mb-6 lg:mb-10 gap-4">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tighter mb-2">Inventario de Productos</h1>
-          <p className="text-sm font-medium text-slate-500">Control de existencias y precios en tiempo real.</p>
+          <h1 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tighter mb-1 sm:mb-2">Inventario de Productos</h1>
+          <p className="text-xs sm:text-sm font-medium text-slate-500">Control de existencias y precios en tiempo real.</p>
         </div>
         <Link 
           href="/admin/inventory/new"
-          className="bg-brand-primary-dark hover:bg-brand-primary text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 shadow-lg shadow-brand-primary/20 transition-all active:scale-95 cursor-pointer"
+          className="bg-brand-primary-dark hover:bg-brand-primary text-white font-bold py-3 px-5 sm:px-6 rounded-xl flex items-center gap-2 shadow-lg shadow-brand-primary/20 transition-all active:scale-95 cursor-pointer w-full sm:w-auto justify-center sm:justify-start shrink-0"
         >
           <Plus className="w-5 h-5" />
           Nuevo Producto
         </Link>
       </div>
 
-      <div className="flex gap-6 mb-10">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 mb-6 lg:mb-10">
         {/* Filters Panel */}
-        <div className="flex-1 bg-brand-secondary rounded-2xl flex items-center p-2 gap-2 h-[88px]">
+        <div className="flex-1 bg-brand-secondary rounded-2xl flex flex-wrap items-center p-2 gap-2">
           {['Todos', 'Combustibles', 'Tienda (Shop)', 'Lubricantes'].map(cat => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}
               className={clsx(
-                "px-8 py-3.5 rounded-xl font-bold text-sm transition-all",
+                "px-4 sm:px-8 py-3 sm:py-3.5 rounded-xl font-bold text-xs sm:text-sm transition-all flex-1 sm:flex-none",
                 filter === cat 
                   ? "bg-brand-primary-dark text-white shadow-sm" 
                   : "text-slate-600 hover:bg-slate-200/50"
@@ -72,12 +72,11 @@ export default function InventoryPage() {
         </div>
 
         {/* Global Value Card */}
-        <div className="bg-brand-primary-dark rounded-2xl p-6 w-[360px] text-white flex flex-col justify-center relative overflow-hidden shadow-sm">
+        <div className="bg-brand-primary-dark rounded-2xl p-5 lg:p-6 lg:w-[360px] text-white flex flex-col justify-center relative overflow-hidden shadow-sm">
           <div className="relative z-10">
             <p className="text-[10px] font-bold tracking-widest uppercase opacity-80 mb-1">Valor de Inventario</p>
-            <p className="text-3xl font-black tracking-tight">${valorInventario.toLocaleString('es-AR', {minimumFractionDigits: 2})}</p>
+            <p className="text-2xl lg:text-3xl font-black tracking-tight">${valorInventario.toLocaleString('es-AR', {minimumFractionDigits: 2})}</p>
           </div>
-          {/* Decorative faint icon */}
           <div className="absolute -right-4 -bottom-4 opacity-10">
             <Box className="w-32 h-32" />
           </div>
@@ -85,9 +84,9 @@ export default function InventoryPage() {
       </div>
 
       {/* Main Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm mb-10">
+      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm mb-6 lg:mb-10 overflow-x-auto">
         {/* Table Headers */}
-        <div className="grid grid-cols-12 gap-4 px-8 py-4 bg-slate-50 border-b border-slate-200 text-[10px] font-bold text-slate-500 tracking-widest uppercase items-center">
+        <div className="grid grid-cols-12 gap-4 px-4 sm:px-8 py-4 bg-slate-50 border-b border-slate-200 text-[10px] font-bold text-slate-500 tracking-widest uppercase items-center min-w-[700px]">
           <div className="col-span-2">Código</div>
           <div className="col-span-3">Descripción</div>
           <div className="col-span-2">Categoría</div>
@@ -100,7 +99,7 @@ export default function InventoryPage() {
         {/* Table Rows - now uses filteredProducts */}
         <div className="divide-y divide-slate-100">
           {filteredProducts.map((product) => (
-            <div key={product.id} className="grid grid-cols-12 gap-4 px-8 py-5 items-center hover:bg-slate-50 transition-colors group">
+            <div key={product.id} className="grid grid-cols-12 gap-4 px-4 sm:px-8 py-5 items-center hover:bg-slate-50 transition-colors group min-w-[700px]">
               <div className="col-span-2 flex flex-col">
                 <span className="text-xs font-bold font-mono text-slate-500">{product.sku}</span>
               </div>
@@ -153,7 +152,7 @@ export default function InventoryPage() {
       </div>
 
       {/* Stats Footers */}
-      <div className="grid grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 mb-8">
         <div className="bg-brand-secondary rounded-2xl p-6 relative overflow-hidden">
            <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6">
               <TrendingDown className="w-6 h-6 text-slate-700" />
